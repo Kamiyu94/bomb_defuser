@@ -201,4 +201,20 @@
                 if (enteredCode === correctPassword) {
                     const today = new Date().toISOString().split('T')[0];
                     localStorage.setItem('bombDefusedDate', today);
-                    alert("任務成功！炸彈成功拆除！
+                    alert("任務成功！炸彈成功拆除！");
+                    window.location.href = 'ending.html'; 
+                } else {
+                    resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
+                    resultMessage.className = "result-message result-error";
+                }
+            }
+            
+            inputs.forEach(input => {
+                input.addEventListener("input", handleInput);
+                input.addEventListener("keydown", handleKeydown);
+            });
+            unlockButton.addEventListener("click", checkPassword);
+        });
+    </script>
+</body>
+</html>

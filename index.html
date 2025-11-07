@@ -33,6 +33,51 @@
             text-align: left;
         }
         
+        /* --- *** 關鍵新增：檔案與工具區 *** --- */
+        .hub-section {
+            background-color: #2a2a2a;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .hub-section h2 {
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #555;
+        }
+        .hub-section a {
+            color: #00ff41;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1.5rem;
+        }
+        .hub-section a:hover {
+            text-decoration: underline;
+        }
+        /* 任務檔案 (Dossier) */
+        #dossier-box {
+            border-color: #ffc107;
+        }
+        #dossier-box h2 {
+            color: #ffc107;
+        }
+        #dossier-box a {
+            color: #ffc107;
+        }
+        /* 通用工具 (Tools) */
+        #tools-box {
+            border-color: #4db8ff;
+        }
+        #tools-box h2 {
+            color: #4db8ff;
+        }
+        #tools-box a {
+            color: #4db8ff;
+        }
+        
         /* 模式選擇容器 (RWD) */
         .mode-container {
             display: flex;
@@ -57,27 +102,15 @@
             letter-spacing: 0.1em;
         }
         
-        /* 標準版 */
-        #standard-mode {
-            border-color: #4db8ff;
-        }
-        #standard-mode h2 {
-            color: #4db8ff;
-        }
-
-        /* 進階版 */
-        #advanced-mode {
-            border-color: #ff4141;
-        }
-        #advanced-mode h2 {
-            color: #ff4141;
-        }
+        #standard-mode { border-color: #4db8ff; }
+        #standard-mode h2 { color: #4db8ff; }
+        #advanced-mode { border-color: #ff4141; }
+        #advanced-mode h2 { color: #ff4141; }
         
-        /* 說明文件區 */
         .guides {
             text-align: left;
             margin-bottom: 2rem;
-            flex-grow: 1; /* RWD 關鍵：讓卡片等高 */
+            flex-grow: 1;
         }
         .guides h3 {
             color: #ffc107;
@@ -93,22 +126,18 @@
             text-decoration: none;
             font-weight: bold;
         }
-        .guides a:hover {
-            text-decoration: underline;
-        }
+        .guides a:hover { text-decoration: underline; }
         
-        /* QR Code 圖片區 */
         .qrcode-image {
-            display: block; /* 讓圖片獨佔一行 */
-            width: 150px; /* QR Code 圖片大小 */
+            display: block;
+            width: 150px;
             height: 150px;
-            margin: 1rem auto; /* 置中 */
-            background-color: #333; /* 圖片載入前的佔位符顏色 */
+            margin: 1rem auto;
+            background-color: #333;
             border: 1px solid #777;
             border-radius: 5px;
         }
         
-        /* 啟動按鈕 */
         .start-button {
             display: block;
             width: 100%;
@@ -122,9 +151,9 @@
             padding: 1rem;
             cursor: pointer;
             text-decoration: none;
-            margin-top: auto; /* RWD 關鍵：讓按鈕永遠置底 */
+            margin-top: auto;
             transition: all 0.3s ease;
-            box-sizing: border-box;
+            box-sizing: border-box; /* 修正溢出 */
         }
         .start-button:hover {
             background-color: #fff;
@@ -135,24 +164,36 @@
         /* 手機 RWD */
         @media (max-width: 768px) {
             .mode-container {
-                flex-direction: column; /* 垂直堆疊 */
-            }
-            .mode-card {
-                padding: 1rem;
+                flex-direction: column;
             }
             h1 { font-size: 1.8rem; }
             .description { font-size: 1rem; }
             .guides p { font-size: 1rem; }
             .qrcode-image { width: 120px; height: 120px; }
+            .hub-section a {
+                display: block; /* 在手機上垂直排列 */
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎮 鷹眼行動 (Operation Hawkeye)</h1>
+        
+        <div class="hub-section" id="dossier-box">
+            <h2>最高機密：任務檔案</h2>
+            <a href="dossier.html" target="_blank">▶ 閱讀任務檔案 (Dossier)</a>
+        </div>
+        
+        <div class="hub-section" id="tools-box">
+            <h2>通用工具</h2>
+            <a href="communications.html" target="_blank">▶ 通訊手冊 (SOP / NATO)</a>
+            <a href="map_legend.html" target="_blank">▶ 行動地圖 (Map / Legend)</a>
+        </div>
+
         <p class="description">
-            歡迎來到「鷹眼行動」任務入口。這是一場高壓的通訊與解謎挑戰。你的團隊必須透過無線電、使用北約音標，在時限內彙整情報、解除威脅。
-            請選擇你的任務模式，並詳閱你的角色指引。
+            請在閱讀任務檔案與工具後，選擇你的任務模式，並詳閱你的角色指引。
         </p>
 
         <div class="mode-container">

@@ -157,19 +157,15 @@
         <div class="result-message" id="result-message"></div>
     </main>
 
-    <script>
+<script>
         document.addEventListener("DOMContentLoaded", () => {
-            // --- *** 關鍵修改 2：移除謎題 JavaScript *** --- ---
             const correctPassword = window.correctPassword; 
-            // (已移除 puzzleString)
-            
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
-            // (已移除顯示謎題的 'if (puzzleString)' 區塊)
+            // (已移除 puzzleString 相關邏輯)
             
-            // 檢查密碼是否存在
             if (!correctPassword) {
                 resultMessage.innerHTML = "錯誤：未設定任務密碼。";
                 unlockButton.disabled = true;
@@ -177,25 +173,37 @@
                 return; 
             }
 
-            // (handleInput, handleKeydown, checkPassword 函式保持不變)
-            function handleInput(e) {
+            // *** 關鍵修改 1：函式從 handleInput 改名為 handleKeyup ***
+            // 這將在「按鍵放開時」才觸發
+            function handleKeyup(e) {
                 const currentInput = e.target;
+                
+                // 排除功能鍵 (例如 Tab, Shift, Arrow keys)
+                if (e.key.length > 1 && e.key !== "Backspace") {
+                    return;
+                }
+                
                 const value = currentInput.value;
                 currentInput.value = value.toUpperCase();
+                
+                // 自動跳到下一個 (只在有輸入字元時)
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
                 if (value.length === 1 && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             }
 
+            // 「按 Backspace 往前跳」的功能 (保持不變)
             function handleKeydown(e) {
                 const currentInput = e.target;
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
+                
                 if (e.key === "Backspace" && currentInput.value.length === 0 && index > 0) {
                     inputs[index - 1].focus();
                 }
             }
 
+            // 「檢查密碼」的功能 (保持不變)
             function checkPassword() {
                 const enteredCode = Array.from(inputs).map(input => input.value).join('').toUpperCase();
                 if (enteredCode === correctPassword) {
@@ -209,10 +217,12 @@
                 }
             }
             
+            // *** 關鍵修改 2：事件從 "input" 改為 "keyup" ***
             inputs.forEach(input => {
-                input.addEventListener("input", handleInput);
-                input.addEventListener("keydown", handleKeydown);
+                input.addEventListener("keyup", handleKeyup); // <--- 在此修改
+                input.addEventListener("keydown", handleKeydown); // <--- 保持不變
             });
+
             unlockButton.addEventListener("click", checkPassword);
         });
     </script>

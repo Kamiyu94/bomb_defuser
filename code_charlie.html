@@ -56,9 +56,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             // *** 關鍵修改：從 URL 讀取密碼片段 ***
             const urlParams = new URLSearchParams(window.location.search);
-            const codePart = urlParams.get('code') || "錯誤";
+            const codePart = (urlParams.get('code') || "錯誤").toUpperCase();
             
-            document.getElementById("code-display").textContent = codePart.toUpperCase();
+            // *** 關鍵修改：立即清除 URL ***
+            history.replaceState(null, '', window.location.pathname);
+            
+            // 將密碼片段寫入
+            document.getElementById("code-display").textContent = codePart;
         });
     </script>
 </body>

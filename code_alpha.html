@@ -35,9 +35,9 @@
             font-size: 6rem;
             font-weight: bold;
             letter-spacing: 0.2em;
-            /* 讓文字不會被選取，增加神秘感 */
             user-select: none;
             text-shadow: 0 0 15px #00ff41;
+            min-height: 1em; /* 避免載入時跳動 */
         }
         @media (max-width: 600px) {
             h1 { font-size: 1.5rem; }
@@ -49,7 +49,18 @@
 <body>
     <div class="code-display">
         <h1>第一組解鎖碼</h1>
-        <div class="code">T4G8</div>
+        <div class="code" id="code-display"></div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // *** 關鍵修改：從 URL 讀取密碼片段 ***
+            const urlParams = new URLSearchParams(window.location.search);
+            const codePart = urlParams.get('code') || "錯誤"; // 取得 code 參數，若無則顯示 "錯誤"
+            
+            // 將密碼片段寫入
+            document.getElementById("code-display").textContent = codePart.toUpperCase();
+        });
+    </script>
 </body>
 </html>

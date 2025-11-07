@@ -37,15 +37,17 @@
             margin-top: 2.5rem;
         }
         
-        /* 範例地圖 SVG */
-        #demo-map {
+        /* --- *** 關鍵：SVG 行動地圖 *** --- */
+        #action-map-svg {
             width: 100%;
             height: auto;
-            background-color: #ccc;
+            background-color: #b0c4b0; /* 地圖底色 (綠色) */
             border: 2px solid #555;
             border-radius: 5px;
+            /* 讓 SVG 內部的文字不可選取 */
+            user-select: none;
         }
-        
+
         /* 提示區 */
         .info-box {
             background-color: #1e1e1e;
@@ -79,33 +81,59 @@
             text-decoration: none;
         }
         .return-link:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.2rem; }
+            .info-box { padding: 1rem; }
+            .info-box ul { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>行動地圖 / 圖例 (Map / Legend)</h1>
         
-        <h2>範例地圖 (Placeholder)</h2>
-        <p>這是一張範例地圖。請將此替換為您的實際行動地圖。</p>
+        <h2>行動地圖 (Action Map)</h2>
+        <p>這是本次行動的唯一指定地圖。所有情報線索都基於此地圖解讀。</p>
         
-        <svg id="demo-map" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-            <rect width="200" height="150" fill="#b0c4b0"/>
-            <path d="M 50 0 V 150 M 100 0 V 150 M 150 0 V 150 M 0 50 H 200 M 0 100 H 200" stroke="#555" stroke-width="0.5" stroke-dasharray="2 2"/>
-            <text x="25" y="8" font-size="6" fill="#000" text-anchor="middle">A</text>
-            <text x="75" y="8" font-size="6" fill="#000" text-anchor="middle">B</text>
-            <text x="125" y="8" font-size="6" fill="#000" text-anchor="middle">C</text>
-            <text x="175" y="8" font-size="6" fill="#000" text-anchor="middle">D</text>
-            <text x="4" y="25" font-size="6" fill="#000" alignment-baseline="middle">1</text>
-            <text x="4" y="75" font-size="6" fill="#000" alignment-baseline="middle">2</text>
-            <text x="4" y="125" font-size="6" fill="#000" alignment-baseline="middle">3</text>
-            <path d="M 100 0 V 150 M 0 75 H 200" stroke="#f00" stroke-width="1"/>
-            <text x="50" y="37.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-1</text>
-            <text x="150" y="37.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-2</text>
-            <text x="50" y="112.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-3</text>
-            <text x="150" y="112.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-4</text>
-            <path d="M 125 125 l 5 -10 l 5 10 z" fill="#00f"/> <text x="130" y="140" font-size="6" fill="#00f">舊塔 (Tower)</text>
-            <circle cx="30" cy="40" r="6" fill="#f00" stroke="#fff" stroke-width="1"/> <text x="30" y="52" font-size="6" fill="#f00" text-anchor="middle">目標 (Target)</text>
-        </svg>
+        <svg id="action-map-svg" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="300" fill="#b0c4b0"/>
+            
+            <path d="M 100 100 C 130 130, 110 180, 130 200 L 110 280 C 90 250, 60 220, 70 150 Z"
+                  fill="#77aaff" stroke="#5588dd" stroke-width="1"/>
+            
+            <defs>
+                <path id="grid-v" d="M 40 0 V 300 M 80 0 V 300 M 120 0 V 300 M 160 0 V 300" 
+                      stroke="#000" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/>
+                <path id="grid-h" d="M 0 60 H 200 M 0 120 H 200 M 0 180 H 200 M 0 240 H 200" 
+                      stroke="#000" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/>
+            </defs>
+            <use href="#grid-v"/>
+            <use href="#grid-h"/>
+            <text x="20" y="8" font-size="6" fill="#000" text-anchor="middle">A</text>
+            <text x="60" y="8" font-size="6" fill="#000" text-anchor="middle">B</text>
+            <text x="100" y="8" font-size="6" fill="#000" text-anchor="middle">C</text>
+            <text x="140" y="8" font-size="6" fill="#000" text-anchor="middle">D</text>
+            <text x="180" y="8" font-size="6" fill="#000" text-anchor="middle">E</text>
+            <text x="4" y="30"  font-size="6" fill="#000" alignment-baseline="middle">1</text>
+            <text x="4" y="90"  font-size="6" fill="#000" alignment-baseline="middle">2</text>
+            <text x="4" y="150" font-size="6" fill="#000" alignment-baseline="middle">3</text>
+            <text x="4" y="210" font-size="6" fill="#000" alignment-baseline="middle">4</text>
+            <text x="4" y="270" font-size="6" fill="#000" alignment-baseline="middle">5</text>
+            
+            <rect x="20" y="15" width="60" height="20" fill="#fff" stroke="#333" stroke-width="0.5"/>
+            <text x="50" y="23" font-size="5" fill="#000" text-anchor="middle">停車場</text>
+            <circle cx="50" cy="45" r="3" fill="green"/>
+            <text x="50" y="55" font-size="5" fill="#000" text-anchor="middle">能量廣場一氣</text>
+            <text x="50" y="50" font-size="5" fill="#f00" text-anchor="middle">(ENERGY-CHI)</text> <circle cx="90" cy="170" r="3" fill="green"/>
+            <text x="90" y="180" font-size="5" fill="#000" text-anchor="middle">能量廣場一石</text>
+            <text x="90" y="165" font-size="10" fill="#f00" text-anchor="middle">☣️</text>
+
+            <circle cx="140" cy="270" r="3" fill="green"/>
+            <text x="140" y="280" font-size="5" fill="#000" text-anchor="middle">能量廣場一木</text>
+            </svg>
 
         <h2>情報解讀 (Intel Key)</h2>
         <p>這份文件說明了如何解讀你從情報官那裡收到的「線索」。</p>
@@ -114,23 +142,26 @@
             <h3>Alpha 小組 (座標)</h3>
             <ul>
                 <li>你的線索是一個「網格座標」(Grid Coordinate)。</li>
-                <li>範例：線索 <code>C-3</code> 指的是地圖上 C 欄與第 3 列的交會區域。</li>
+                <li>範例：線索 <code>D-5</code> (Delta-Five) 指的是地圖上 D 欄與第 5 列的交會區域。</li>
+                <li><strong>(教官提示：線索 <code>D-5</code> 對應「能量廣場一木」)</strong></li>
             </ul>
         </div>
         
         <div class="info-box">
             <h3>Bravo 小組 (編碼)</h3>
             <ul>
-                <li>你的線索是一個「區域編碼」(Sector Code)。</li>
-                <li>範例：線索 <code>S-2</code> 指的是地圖上標示為「S-2」的紅色大區域。</li>
+                <li>你的線索是一個「地圖編碼」(Map Code)。</li>
+                <li>範例：線索 <code>ENERGY-CHI</code> 指的是地圖上標示此編碼的區域。</li>
+                <li><strong>(教官提示：線索 <code>ENERGY-CHI</code> 對應「能量廣場一氣」)</strong></li>
             </ul>
         </div>
         
         <div class="info-box">
-            <h3>Charlie 小組 (地標)</h3>
+            <h3>Charlie 小組 (地標/符號)</h3>
             <ul>
-                <li>你的線索是一個「地標」(Landmark)。</li>
-                <li>範例：線索 <code>"The Old Tower"</code> 指的是地圖上標示為「舊塔」的 🔺 符號位置。</li>
+                <li>你的線索是一個「地標符號」(Landmark Symbol)。</li>
+                <li>範例：線索 <code>BIOHAZARD</code> (生化危機) 指的是地圖上標示 <code>☣️</code> 符號的位置。</li>
+                <li><strong>(教官提示：線索 <code>BIOHAZARD</code> 對應「能量廣場一石」)</strong></li>
             </ul>
         </div>
         

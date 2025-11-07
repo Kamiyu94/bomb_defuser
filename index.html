@@ -2,9 +2,14 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>鷹眼行動 - 任務簡報</title>
     <style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
         body {
             font-family: 'Courier New', Courier, monospace;
             background-color: #1a1a1a;
@@ -16,7 +21,6 @@
             margin: 0;
             padding: 2rem;
             box-sizing: border-box;
-            /* subtle scanline effect */
             background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
             background-size: 100% 4px;
         }
@@ -42,7 +46,6 @@
             display: inline-block;
             margin-bottom: 2rem;
             letter-spacing: 0.1em;
-            /* 模擬印章效果 */
             transform: rotate(-5deg);
         }
 
@@ -60,6 +63,7 @@
             border-top: 1px dashed #555;
             border-bottom: 1px dashed #555;
             padding: 1.5rem 0;
+            margin-bottom: 2.5rem;
         }
 
         .briefing-content h2 {
@@ -80,26 +84,86 @@
             font-weight: normal;
         }
 
-        .cta-button {
-            display: inline-block;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 8px;
-            padding: 1rem 2.5rem;
-            cursor: pointer;
-            text-decoration: none;
-            margin-top: 2.5rem;
-            transition: all 0.3s ease;
+        .role-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
         }
 
-        .cta-button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        .role-box {
+            flex: 1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #555;
+            background-color: #1e1e1e;
+            box-sizing: border-box;
+            /* 讓兩個盒子高度一致 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .role-box h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            text-shadow: none;
+        }
+
+        .role-box p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* 玩家盒子 (藍色 - 資訊) */
+        #player-box {
+            border-color: #4db8ff;
+        }
+        #player-box h2 {
+            color: #4db8ff;
+        }
+        .status-indicator {
+            color: #ffc107; /* 黃色狀態 */
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed #555;
+            display: block;
+            animation: blink 1.5s infinite;
+        }
+
+        /* 教官盒子 (紅色 - 資訊) */
+        #instructor-box {
+            border-color: #ff4141;
+        }
+        #instructor-box h2 {
+            color: #ff4141;
+        }
+        
+        /* --- *** 關鍵修改：秘密連結 *** --- */
+        #secret-link {
+            position: fixed;  /* 固定在瀏覽器視窗 */
+            bottom: 0;        /* 貼齊底部 */
+            left: 0;
+            width: 100%;      /* 整個寬度 */
+            height: 20px;     /* 20 像素的高度 */
+            opacity: 0;       /* 完全透明 */
+            cursor: default;  /* 關鍵：滑鼠移過時不顯示手形 */
+            z-index: 999;     /* 確保在最上層 */
+            
+            /* 如果您需要測試它在哪，可以暫時打開這行 */
+            /* background-color: rgba(255, 0, 0, 0.5); */
+        }
+
+
+        /* --- RWD --- */
+        @media (max-width: 700px) {
+            .role-container {
+                flex-direction: column; /* 在手機上垂直堆疊 */
+            }
         }
 
         @media (max-width: 600px) {
@@ -114,11 +178,6 @@
             }
             .briefing-content {
                 font-size: 1rem;
-            }
-            .cta-button {
-                font-size: 1.2rem;
-                width: 100%;
-                box-sizing: border-box; /* 確保 padding 不會讓按鈕溢出 */
             }
         }
     </style>
@@ -138,16 +197,35 @@
             <h2>任務目標</h2>
             <p>這組密碼被拆分為三組，由三支獨立小隊持有。你的團隊必須分工合作：</p>
             <ol>
-                <li><strong>教官 (Instructor):</strong> 點擊下方按鈕以「啟動任務」，系統將產生本次行動的專屬連結。</li>
+                <li><strong>教官 (Instructor):</strong> 掌握秘密入口，以「啟動任務」並產生所有人的專屬連結。</li>
                 <li><strong>情報小組 (Alpha, Bravo, Charlie):</strong> 教官將分別提供 3 個連結給 3 組人，你們將各自獲得 <strong>4</strong> 位數的密碼片段。</li>
-                <li><strong>拆彈小組 (Defuse):</strong> 教官將提供「拆彈主頁」的連結。你們必須彙整 3 組情報，並在時限內輸入完整的 <strong>12</strong> 位密碼。</li>
+                <li><strong>拆彈小組 (Defuse):</strong> 教官將提供「拆彈主頁」的連結。你們必須彙整 3 組情報，並輸入完整的 <strong>12</strong> 位密碼。</li>
             </ol>
             <p>時間不多了。世界的命運掌握在你們手中。祝你好運。</p>
         </div>
 
-        <!-- 這個連結會導向您的 mission_generator.html -->
-        <a href="mission_generator.html" class="cta-button">啟動任務 (教官入口)</a>
+        <div class="role-container">
+            
+            <div class="role-box" id="player-box">
+                <div>
+                    <h2>...我是玩家...</h2>
+                    <p>請在此等候。您的教官將會提供您專屬的任務連結（例如：拆彈頁面或密碼頁面）。</p>
+                </div>
+                <span class="status-indicator">...AWAITING MISSION DATA...</span>
+            </div>
+
+            <div class="role-box" id="instructor-box">
+                <div>
+                    <h2>...我是教官...</h2>
+                    <p>任務流程已確認。通訊頻道已加密。請依照您的權限啟動任務。</p>
+                </div>
+                <span class="status-indicator" style="animation: none; opacity: 1; color: #ff4141;">...STANDBY FOR ACTION...</span>
+            </div>
+        </div>
+
     </div>
+    
+    <a id="secret-link" href="mission_generator.html" aria-label="啟動任務 (秘密入口)"></a>
 
 </body>
 </html>

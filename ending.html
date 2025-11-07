@@ -46,7 +46,7 @@
             font-size: 2.5rem;
         }
         
-        /* 這是為計數器預留的位置 */
+        /* --- *** 關鍵修改：更新標題文字 *** --- */
         #counter-display {
             font-size: 1.5rem;
             color: #ffc107; /* 黃色 */
@@ -57,7 +57,6 @@
             border-radius: 5px;
         }
         
-        /* 這是 "防止 reload" 邏輯的展示 */
         #reload-message {
             font-size: 1rem;
             color: #aaa;
@@ -110,46 +109,38 @@
 <body>
 
     <div class="container">
-        <h1>...任務完成...</h1>
+        <h1>...威脅已解除...</h1>
 
         <div id="counter-display">
-            恭喜！您已成功拆除炸彈！
+            恭喜拆彈小組！炸彈已成功拆除！
         </div>
         <p id="reload-message">（偵測到頁面重載）</p>
 
         <div class="content">
-            <h2>幹得好，探員。</h2>
-            <p>你們的精準合作與冷靜判斷，成功化解了這次危機。城市安全了，這都歸功於你們的努力。</p>
+            <h2>幹得好，拆彈小組。</h2>
+            <p>你們在巨大的壓力下完成了關鍵的最後一步。情報小組的資訊在你們手中化為了勝利。</p>
             <p>總部對你們的表現致上最高敬意。</p>
             
             <div class="report-box">
-                <h2>下一步：任務回報</h2>
-                <p>請立即前往您的指定頻道（例如 Discord / Line）回報：</p>
-                <p><code>這裡是 [您的隊名] 小隊，炸彈已正式拆除。</code></p>
+                <h2>下一步：全員通報</h2>
+                <p>請立即前往你們的 LINE 群組 通報所有成員，讓大家知道這個好消息：</p>
+                <p><code>回報總部，黑蛇的蛋已經拆除</code></p>
             </div>
         </div>
     </div>
 
     <script>
+        // (JavaScript 防重載邏輯保持不變)
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 這是「防止重複計次」的邏輯展示
-            // 我們檢查 localStorage 中是否 *已經有* "lastVisit" 這個項目
             const lastVisit = localStorage.getItem('lastEndingVisit');
             
             if (lastVisit) {
-                // 如果有，代表這是一次 Reload (重載)
                 document.getElementById('reload-message').style.display = 'block';
-                // 在這裡，我們 *不會* 呼叫計數器增加的函式
             } else {
-                // 如果沒有，這是第一次載入
-                // 在這裡，我們 *才會* 呼叫計數器增加的函式 (如果有的話)
-                // console.log("第一次載入，準備呼叫計數器...");
+                // 這裡是未來可以放計數器的地方
             }
             
-            // 無論如何，都設定 "lastVisit"，這樣下一次重載就會被偵測到
-            // (注意：這只是為了 *展示* 防 reload 邏KA, 它會阻止計次)
-            // (在 `bomb_defuse.html` 中設定的 `bombDefusedDate` 才是真正用來判斷 "今天" 是否成功的)
             localStorage.setItem('lastEndingVisit', new Date().getTime());
 
         });

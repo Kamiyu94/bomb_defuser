@@ -6,25 +6,34 @@
     <title>鷹眼行動</title>
     
     <script>
-        // 「閱後即焚」腳本 (保持不變)
+        // 「閱後即焚」腳本 (已移除 puzzleString)
         const urlParams = new URLSearchParams(window.location.search);
         window.correctPassword = (urlParams.get('pass') || "").toUpperCase();
+        // (已移除 puzzleString 邏輯)
         history.replaceState(null, '', window.location.pathname);
     </script>
     
     <style>
         :root {
             --font-base: 1rem;
-            --input-size: 2.5em;
-            --input-gap: 0.25em;
+            --input-size: 2.5em; /* 40px */
+            --input-gap: 0.25em; /* 4px */
         }
+        
+        /* --- *** 關鍵修改 1：修正手機版 RWD *** --- */
         @media (max-width: 600px) {
             :root {
-                --font-base: 1.125rem;
-                --input-size: 3em;
-                --input-gap: 0.3em;
+                --font-base: 1.125rem; 
+                --input-size: 2.5em;     /* 從 3em 改回 2.5em (45px) */
+                --input-gap: 0.2em;      /* 縮小一點間距 (3.6px) */
             }
+            /* 新手機版寬度計算 (以 320px 螢幕為例):
+               容器可用寬度: 320px - (padding 2rem * 2) = 320 - 72 = 248px
+               4個框總寬度: (45px * 4) + (3.6px * 8) = 180 + 28.8 = 208.8px
+               208.8px < 248px，排版安全。
+            */
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
             background-color: #f0f2f5;
@@ -51,24 +60,36 @@
             font-size: calc(var(--font-base) * 1.75);
             color: #1a2b4d;
             margin-top: 0;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem; /* 恢復下方間距 */
         }
+        
+        /* --- *** 關鍵修改 2：移除謎題 CSS *** --- */
+        #puzzle-display {
+            display: none; 
+        }
+        
+        /* 垂直堆疊的 CSS (保持不變) */
         .code-input-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin-bottom: 2rem;
-            flex-wrap: wrap; 
         }
-        .code-input-group { display: flex; }
+        .code-input-group { 
+            display: flex; 
+            flex-wrap: nowrap;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .code-input-group:last-child {
+            margin-bottom: 0;
+        }
         .code-input {
             width: var(--input-size);
             height: calc(var(--input-size) * 1.2);
-            font-size: calc(var(--font-base) * 1.5);
+            font-size: calc(var(--font-base) * 1.25);
             text-align: center;
             border: 2px solid #ccc;
             border-radius: 8px;
             margin: 0 var(--input-gap);
+            padding: 0;
             text-transform: uppercase;
             -moz-appearance: textfield;
         }
@@ -82,12 +103,8 @@
             box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
             outline: none;
         }
-        .code-separator {
-            font-size: calc(var(--font-base) * 2);
-            font-weight: bold;
-            color: #888;
-            line-height: calc(var(--input-size) * 1.2);
-            padding: 0 0.2em;
+        .code-separator { 
+            display: none;
         }
         .unlock-button {
             font-size: calc(var(--font-base) * 1.25);
@@ -110,12 +127,12 @@
         }
         .result-success { color: #28a745; }
         .result-error { color: #dc3545; }
-        .error-link { color: #dc3545; font-weight: bold; }
     </style>
 </head>
 <body>
     <main class="mission-container">
         <h1>鷹眼行動：拆除炸彈</h1>
+        
         <div class="code-input-area" id="code-container">
             <div class="code-input-group">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 1 位">
@@ -123,14 +140,12 @@
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 3 位">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 4 位">
             </div>
-            <span class="code-separator">-</span>
             <div class="code-input-group">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 5 位">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 6 位">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 7 位">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 8 位">
             </div>
-            <span class="code-separator">-</span>
             <div class="code-input-group">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 9 位">
                 <input type="text" class="code-input" maxlength="1" aria-label="密碼第 10 位">
@@ -144,75 +159,46 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 從 <head> 的腳本讀取密碼
+            // --- *** 關鍵修改 2：移除謎題 JavaScript *** --- ---
             const correctPassword = window.correctPassword; 
+            // (已移除 puzzleString)
             
-            // 抓取所有需要的 HTML 元素
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
+            // (已移除顯示謎題的 'if (puzzleString)' 區塊)
+            
             // 檢查密碼是否存在
             if (!correctPassword) {
-                resultMessage.innerHTML = "錯誤：未設定任務密碼。請從「任務產生器」頁面重新開始。";
-                resultMessage.className = "result-message result-error";
+                resultMessage.innerHTML = "錯誤：未設定任務密碼。";
                 unlockButton.disabled = true;
                 inputs.forEach(input => input.disabled = true);
                 return; 
             }
 
-            // 「自動跳轉」功能
+            // (handleInput, handleKeydown, checkPassword 函式保持不變)
             function handleInput(e) {
                 const currentInput = e.target;
                 const value = currentInput.value;
                 currentInput.value = value.toUpperCase();
-                
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
                 if (value.length === 1 && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             }
 
-            // 「按 Backspace 往前跳」的功能
             function handleKeydown(e) {
                 const currentInput = e.target;
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
-                
                 if (e.key === "Backspace" && currentInput.value.length === 0 && index > 0) {
                     inputs[index - 1].focus();
                 }
             }
 
-            // 「檢查密碼」的功能
             function checkPassword() {
-                const enteredCode = Array.from(inputs)
-                                       .map(input => input.value)
-                                       .join('')
-                                       .toUpperCase();
-
+                const enteredCode = Array.from(inputs).map(input => input.value).join('').toUpperCase();
                 if (enteredCode === correctPassword) {
-                    
                     const today = new Date().toISOString().split('T')[0];
                     localStorage.setItem('bombDefusedDate', today);
-
-                    alert("任務成功！炸彈成功拆除！");
-                    
-                    window.location.href = 'ending.html'; 
-
-                } else {
-                    resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
-                    resultMessage.className = "result-message result-error";
-                }
-            }
-
-            // *** 綁定功能 ***
-            inputs.forEach(input => {
-                input.addEventListener("input", handleInput);
-                input.addEventListener("keydown", handleKeydown);
-            });
-
-            unlockButton.addEventListener("click", checkPassword);
-        });
-    </script>
-</body>
-</html>
+                    alert("任務成功！炸彈成功拆除！

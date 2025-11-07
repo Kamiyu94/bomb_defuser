@@ -60,6 +60,17 @@
         .links-container p {
             margin: 1rem 0;
             font-size: 1.1rem;
+            /* 讓連結和按鈕在小螢幕上也能對齊 */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .link-text {
+            display: flex;
+            align-items: center;
+            flex-basis: 70%; /* 給連結多一點空間 */
+            min-width: 250px;
         }
         .links-container strong {
             color: #f0f0f0;
@@ -72,14 +83,34 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             word-break: break-all;
-            display: inline-block;
             margin-right: 10px;
-            vertical-align: middle;
         }
         .links-container a:hover {
             text-decoration: underline;
         }
         
+        /* --- *** 關鍵修改：複製按鈕樣式 *** --- */
+        .copy-btn {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6c757d;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0; /* 防止按鈕被壓縮 */
+        }
+        .copy-btn:hover {
+            background-color: #5a6268;
+        }
+        .copy-btn.copied {
+            background-color: #28a745; /* 綠色 */
+            color: white;
+        }
+
         .password-display {
             font-size: 1.5rem;
             font-family: 'Courier New', Courier, monospace;
@@ -98,8 +129,7 @@
         }
 
     </style>
-    
-    </head>
+</head>
 <body>
     <div class="container">
         <h1>鷹眼行動 - 任務產生器</h1>
@@ -108,12 +138,27 @@
             <h2>新任務已產生！</h2>
             <p>請將以下連結（可點擊右鍵「複製連結網址」）分發給各小組：</p>
             
-            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank">bomb_defuse.html</a></p>
-            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank">code_alpha.html</a></p>
-            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank">code_bravo.html</a></p>
-            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank">code_charlie.html</a></p>
+            <p>
+                <span class="link-text"><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank">bomb_defuse.html</a></span>
+                <button class="copy-btn" data-target-id="link-main">複製</button>
+            </p>
+            <p>
+                <span class="link-text"><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank">code_alpha.html</a></span>
+                <button class="copy-btn" data-target-id="link-part1">複製</button>
+            </p>
+            <p>
+                <span class="link-text"><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank">code_bravo.html</a></span>
+                <button class="copy-btn" data-target-id="link-part2">複製</button>
+            </p>
+            <p>
+                <span class="link-text"><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank">code_charlie.html</a></span>
+                <button class="copy-btn" data-target-id="link-part3">複製</button>
+            </p>
             <hr style="border-color: #555;">
-            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank">answer.html</a></p>
+            <p>
+                <span class="link-text"><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank">answer.html</a></span>
+                <button class="copy-btn" data-target-id="link-instructor">複製</button>
+            </p>
             
             <div class="password-display hidden-state" id="password-display" data-visible="false">
                 [ 點此顯示/隱藏密碼 ]
@@ -123,10 +168,16 @@
 
     <script>
         let currentPassword = ""; // 儲存當前生成的密碼
-        
         const passwordDisplay = document.getElementById("password-display");
         
         document.getElementById("generate-button").addEventListener("click", () => {
+            
+            // *** 關鍵修改：重設所有複製按鈕的狀態 ***
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.textContent = '複製';
+                button.classList.remove('copied');
+            });
+
             // 1. 產生新密碼
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             let fullPassword = "";
@@ -168,30 +219,64 @@
             document.getElementById("links-container").style.display = "block";
 
             console.log("新任務密碼:", formattedPassword);
-
-            // (QR Code 的 JAVASCRIPT 邏輯已移除)
         });
 
-        // 為密碼顯示區新增點擊事件
+        // 為密碼顯示區新增點擊事件 (保持不變)
         passwordDisplay.addEventListener("click", () => {
             if (currentPassword === "") return;
-
             const isVisible = passwordDisplay.dataset.visible === "true";
-
             if (isVisible) {
-                // 隱藏
                 passwordDisplay.textContent = "[ 點此顯示/隱藏密碼 ]";
                 passwordDisplay.classList.add("hidden-state");
                 passwordDisplay.dataset.visible = "false";
             } else {
-                // 顯示
                 passwordDisplay.textContent = `本次密碼: ${currentPassword}`;
                 passwordDisplay.classList.remove("hidden-state");
                 passwordDisplay.dataset.visible = "true";
             }
         });
 
-        // (generateQrCode 函式已移除)
+        // *** 關鍵修改：複製到剪貼簿的函式 ***
+        function copyToClipboard(text, buttonEl) {
+            // navigator.clipboard 只能在安全連線 (HTTPS) 或本地 (localhost) 運作
+            if (!navigator.clipboard) {
+                alert("瀏覽器不支援或未處於安全連線 (HTTPS)，無法自動複製。");
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                console.log('Link copied to clipboard');
+                // 提供視覺回饋
+                buttonEl.textContent = '已複製!';
+                buttonEl.classList.add('copied');
+                
+                // 2 秒後恢復按鈕
+                setTimeout(() => {
+                    buttonEl.textContent = '複製';
+                    buttonEl.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('複製失敗: ' + err);
+            });
+        }
+
+        // *** 關鍵修改：為所有複製按鈕綁定事件 ***
+        // 頁面載入時就綁定，它們會自動讀取最新的 href
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.dataset.targetId;
+                const linkElement = document.getElementById(targetId);
+                
+                // 檢查連結是否已經產生
+                if (linkElement && linkElement.href && linkElement.href.includes('?')) {
+                    copyToClipboard(linkElement.href, button);
+                } else {
+                    console.error('No link found to copy for target:', targetId);
+                    alert('請先產生新任務連結！');
+                }
+            });
+        });
+
     </script>
 </body>
 </html>

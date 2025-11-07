@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 任務產生器</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+        .container {
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+        h1 {
+            color: #4db8ff;
+            margin-top: 0;
+        }
+        .generate-button {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        .generate-button:hover {
+            background-color: #0056b3;
+        }
+        .links-container {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+            display: none; /* 預設隱藏 */
+        }
+        .links-container h2 {
+            margin-top: 0;
+            color: #ffc107;
+            border-bottom: 2px solid #555;
+            padding-bottom: 0.5rem;
+        }
+        .links-container p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+        .links-container strong {
+            color: #f0f0f0;
+            display: inline-block;
+            min-width: 110px;
+        }
+        .links-container a {
+            color: #4db8ff;
+            text-decoration: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        .links-container a:hover {
+            text-decoration: underline;
+        }
+        .password-display {
+            font-size: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            color: #28a745;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #1e1e1e;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>鷹眼行動 - 任務產生器</h1>
+        <button class="generate-button" id="generate-button">產生新任務連結</button>
+        <div class="links-container" id="links-container">
+            <h2>新任務已產生！</h2>
+            <p>請將以下連結（可點擊右鍵「複製連結網址」）分發給各小組：</p>
+            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank"></a></p>
+            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank"></a></p>
+            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank"></a></p>
+            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank"></a></p>
+            <hr style="border-color: #555;">
+            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank"></a></p>
+            <div class="password-display" id="password-display"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("generate-button").addEventListener("click", () => {
+            // 1. 產生新密碼
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let fullPassword = "";
+            for (let i = 0; i < 12; i++) {
+                fullPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            // 2. 拆分密碼
+            const part1 = fullPassword.substring(0, 4);
+            const part2 = fullPassword.substring(4, 8);
+            const part3 = fullPassword.substring(8, 12);
+            const formattedPassword = `${part1}-${part2}-${part3}`;
+
+            // 3. 取得目前路徑 (確保相對路徑正確)
+            const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+
+            // 4. 產生連結 (使用 encodeURIComponent 確保特殊字元安全)
+            const linkMain = `${baseURL}hawkeye_main.html?pass=${encodeURIComponent(fullPassword)}`;
+            const linkPart1 = `${baseURL}password_part1.html?code=${encodeURIComponent(part1)}`;
+            const linkPart2 = `${baseURL}password_part2.html?code=${encodeURIComponent(part2)}`;
+            const linkPart3 = `${baseURL}password_part3.html?code=${encodeURIComponent(part3)}`;
+            const linkInstructor = `${baseURL}instructor_view.html?pass=${encodeURIComponent(formattedPassword)}`;
+
+            // 5. 將連結填入 HTML
+            document.getElementById("link-main").href = linkMain;
+            document.getElementById("link-main").textContent = "hawkeye_main.html";
+            
+            document.getElementById("link-part1").href = linkPart1;
+            document.getElementById("link-part1").textContent = "password_part1.html";
+
+            document.getElementById("link-part2").href = linkPart2;
+            document.getElementById("link-part2").textContent = "password_part2.html";
+            
+            document.getElementById("link-part3").href = linkPart3;
+            document.getElementById("link-part3").textContent = "password_part3.html";
+
+            document.getElementById("link-instructor").href = linkInstructor;
+            document.getElementById("link-instructor").textContent = "instructor_view.html";
+
+            // 6. 顯示密碼和連結
+            document.getElementById("password-display").textContent = `本次密碼: ${formattedPassword}`;
+            document.getElementById("links-container").style.display = "block";
+
+            console.log("新任務密碼:", formattedPassword);
+        });
+    </script>
+</body>
+</html>

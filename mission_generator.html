@@ -72,20 +72,59 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             word-break: break-all;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
         }
         .links-container a:hover {
             text-decoration: underline;
         }
+        
+        /* --- *** 關鍵修改 1：密碼顯示區樣式 *** --- */
         .password-display {
             font-size: 1.5rem;
             font-family: 'Courier New', Courier, monospace;
-            color: #28a745;
+            color: #28a745; /* 預設為綠色 (顯示時) */
             margin-top: 1rem;
             padding: 1rem;
             background: #1e1e1e;
             border-radius: 5px;
+            cursor: pointer; /* 提示可以點擊 */
+            user-select: none; /* 防止點擊時選取文字 */
+            transition: color 0.2s;
+        }
+        /* 隱藏時的樣式 */
+        .password-display.hidden-state {
+            color: #ffc107; /* 提示的黃色 */
+            font-style: italic;
+        }
+        
+        .qr-code-wrapper {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            border: 1px solid #555;
+            background-color: white;
+            padding: 2px;
+            border-radius: 3px;
+        }
+        .qr-code-wrapper canvas {
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .links-container p {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .links-container a, .qr-code-wrapper {
+                display: block;
+                margin-top: 5px;
+                margin-left: 0;
+            }
         }
     </style>
+    
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -95,18 +134,26 @@
             <h2>新任務已產生！</h2>
             <p>請將以下連結（可點擊右鍵「複製連結網址」）分發給各小組：</p>
             
-            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank"></a></p>
-            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank"></a></p>
-            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank"></a></p>
-            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank"></a></p>
+            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank">bomb_defuse.html</a><span id="qr-main"></span></p>
+            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank">code_alpha.html</a><span id="qr-part1"></span></p>
+            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank">code_bravo.html</a><span id="qr-part2"></span></p>
+            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank">code_charlie.html</a><span id="qr-part3"></span></p>
             <hr style="border-color: #555;">
-            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank"></a></p>
+            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank">answer.html</a><span id="qr-instructor"></span></p>
             
-            <div class="password-display" id="password-display"></div>
+            <div class="password-display hidden-state" id="password-display" data-visible="false">
+                [ 點此顯示/隱藏密碼 ]
+            </div>
         </div>
     </div>
 
     <script>
+        // *** 關鍵修改 3：將密碼存在變數中 ***
+        let currentPassword = ""; // 儲存當前生成的密碼
+        
+        // 頁面載入時就先抓好元素
+        const passwordDisplay = document.getElementById("password-display");
+        
         document.getElementById("generate-button").addEventListener("click", () => {
             // 1. 產生新密碼
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -120,39 +167,86 @@
             const part2 = fullPassword.substring(4, 8);
             const part3 = fullPassword.substring(8, 12);
             const formattedPassword = `${part1}-${part2}-${part3}`;
+            
+            // *** 關鍵修改：將密碼存到全域變數 ***
+            currentPassword = formattedPassword;
 
-            // 3. 取得目前路徑 (確保相對路徑正確)
+            // 3. 取得目前路徑
             const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
 
-            // 4. *** 關鍵修改：產生連結 (已更新為您的檔名) ***
+            // 4. 產生連結
             const linkMain = `${baseURL}bomb_defuse.html?pass=${encodeURIComponent(fullPassword)}`;
             const linkPart1 = `${baseURL}code_alpha.html?code=${encodeURIComponent(part1)}`;
             const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(part2)}`;
             const linkPart3 = `${baseURL}code_charlie.html?code=${encodeURIComponent(part3)}`;
             const linkInstructor = `${baseURL}answer.html?pass=${encodeURIComponent(formattedPassword)}`;
 
-            // 5. *** 關鍵修改：將連結填入 HTML (已更新為您的檔名) ***
+            // 5. 將連結填入 HTML
             document.getElementById("link-main").href = linkMain;
-            document.getElementById("link-main").textContent = "bomb_defuse.html";
-            
             document.getElementById("link-part1").href = linkPart1;
-            document.getElementById("link-part1").textContent = "code_alpha.html";
-
             document.getElementById("link-part2").href = linkPart2;
-            document.getElementById("link-part2").textContent = "code_bravo.html";
-            
             document.getElementById("link-part3").href = linkPart3;
-            document.getElementById("link-part3").textContent = "code_charlie.html";
-
             document.getElementById("link-instructor").href = linkInstructor;
-            document.getElementById("link-instructor").textContent = "answer.html";
 
-            // 6. 顯示密碼和連結
-            document.getElementById("password-display").textContent = `本次密碼: ${formattedPassword}`;
+            // 6. *** 關鍵修改：重設密碼顯示區為隱藏狀態 ***
+            passwordDisplay.textContent = "[ 點此顯示/隱藏密碼 ]";
+            passwordDisplay.classList.add("hidden-state");
+            passwordDisplay.dataset.visible = "false";
+            
+            // 顯示連結區
             document.getElementById("links-container").style.display = "block";
 
             console.log("新任務密碼:", formattedPassword);
+
+            // 7. 生成 QR Code
+            document.getElementById("qr-main").innerHTML = '';
+            document.getElementById("qr-part1").innerHTML = '';
+            document.getElementById("qr-part2").innerHTML = '';
+            document.getElementById("qr-part3").innerHTML = '';
+            document.getElementById("qr-instructor").innerHTML = '';
+
+            generateQrCode("qr-main", linkMain);
+            generateQrCode("qr-part1", linkPart1);
+            generateQrCode("qr-part2", linkPart2);
+            generateQrCode("qr-part3", linkPart3);
+            generateQrCode("qr-instructor", linkInstructor);
         });
+
+        // *** 關鍵修改 3：為密碼顯示區新增點擊事件 ***
+        passwordDisplay.addEventListener("click", () => {
+            // 如果還沒產生密碼，就什麼都不做
+            if (currentPassword === "") return;
+
+            const isVisible = passwordDisplay.dataset.visible === "true";
+
+            if (isVisible) {
+                // 目前是顯示的 -> 把它隱藏
+                passwordDisplay.textContent = "[ 點此顯示/隱藏密碼 ]";
+                passwordDisplay.classList.add("hidden-state");
+                passwordDisplay.dataset.visible = "false";
+            } else {
+                // 目前是隱藏的 -> 把它顯示
+                passwordDisplay.textContent = `本次密碼: ${currentPassword}`;
+                passwordDisplay.classList.remove("hidden-state");
+                passwordDisplay.dataset.visible = "true";
+            }
+        });
+
+        // 生成 QR Code 的輔助函式
+        function generateQrCode(elementId, url) {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'qr-code-wrapper';
+            document.getElementById(elementId).appendChild(wrapper);
+
+            new QRCode(wrapper, {
+                text: url,
+                width: 60,
+                height: 60,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
     </script>
 </body>
 </html>

@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>鷹眼行動</title>
+    
+    <script>
+        // 立即從 URL 讀取密碼
+        const urlParams = new URLSearchParams(window.location.search);
+        // 將密碼存儲在全域 window 變數中，以便稍後使用
+        window.correctPassword = (urlParams.get('pass') || "").toUpperCase();
+        
+        // 立即清除 URL (閱後即焚)
+        // 這會將 "....html?pass=ABC" 改回 "....html"
+        history.replaceState(null, '', window.location.pathname);
+    </script>
+    
     <style>
         :root {
             --font-base: 1rem;
@@ -102,6 +114,7 @@
         }
         .result-success { color: #28a745; }
         .result-error { color: #dc3545; }
+        .error-link { color: #dc3545; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -135,15 +148,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // *** 關鍵修改：密碼已由總部 (Gemini) 指定 ***
-            const correctPassword = "T4G8F2J9V6N1"; 
+            // *** 關鍵修改 2：現在直接從 window.correctPassword 讀取密碼 ***
+            // (我們在 <head> 中已經把密碼存到這裡了)
+            const correctPassword = window.correctPassword; 
             
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
-            // (已移除 'generatePassword()' 函式)
+            // 檢查是否成功獲取密碼
+            if (!correctPassword) {
+                resultMessage.innerHTML = "錯誤：未設定任務密碼。請從「任務產生器」頁面重新開始。";
+                resultMessage.className = "result-message result-error";
+                unlockButton.disabled = true; // 禁用按鈕
+                inputs.forEach(input => input.disabled = true);
+                return; // 停止執行
+            }
 
+            // (處理輸入和跳轉的函式... 保持不變)
             function handleInput(e) {
                 const currentInput = e.target;
                 const value = currentInput.value;
@@ -162,12 +184,14 @@
                 }
             }
 
+            // (檢查密碼的函式... 保持不變)
             function checkPassword() {
                 const enteredCode = Array.from(inputs)
                                        .map(input => input.value)
                                        .join('')
                                        .toUpperCase();
-
+                
+                // 這裡的 correctPassword 來自頂部的 const correctPassword
                 if (enteredCode === correctPassword) {
                     resultMessage.textContent = "任務成功！炸彈成功拆除！";
                     resultMessage.className = "result-message result-success";

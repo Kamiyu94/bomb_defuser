@@ -93,17 +93,19 @@
         document.addEventListener("DOMContentLoaded", () => {
             // *** 關鍵修改：從 URL 讀取密碼 ***
             const urlParams = new URLSearchParams(window.location.search);
-            // 讀取帶有 '-' 的密碼
-            const formattedPassword = urlParams.get('pass') || "錯誤"; 
+            const formattedPassword = (urlParams.get('pass') || "錯誤").toUpperCase(); 
             
-            document.getElementById("full-code-display").textContent = formattedPassword.toUpperCase();
+            // *** 關鍵修改：立即清除 URL ***
+            history.replaceState(null, '', window.location.pathname);
+            
+            // --- 後續顯示邏輯不變 ---
+            document.getElementById("full-code-display").textContent = formattedPassword;
 
-            // 拆分密碼並分別顯示
             const parts = formattedPassword.split('-');
             if (parts.length === 3) {
-                document.getElementById("part1-display").textContent = parts[0].toUpperCase();
-                document.getElementById("part2-display").textContent = parts[1].toUpperCase();
-                document.getElementById("part3-display").textContent = parts[2].toUpperCase();
+                document.getElementById("part1-display").textContent = parts[0];
+                document.getElementById("part2-display").textContent = parts[1];
+                document.getElementById("part3-display").textContent = parts[2];
             } else {
                 document.getElementById("part1-display").textContent = "錯誤";
                 document.getElementById("part2-display").textContent = "錯誤";

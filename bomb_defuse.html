@@ -144,11 +144,15 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 從 <head> 的腳本讀取密碼
             const correctPassword = window.correctPassword; 
+            
+            // 抓取所有需要的 HTML 元素
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
+            // 檢查密碼是否存在
             if (!correctPassword) {
                 resultMessage.innerHTML = "錯誤：未設定任務密碼。請從「任務產生器」頁面重新開始。";
                 resultMessage.className = "result-message result-error";
@@ -157,25 +161,29 @@
                 return; 
             }
 
+            // 「自動跳轉」功能
             function handleInput(e) {
                 const currentInput = e.target;
                 const value = currentInput.value;
                 currentInput.value = value.toUpperCase();
+                
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
                 if (value.length === 1 && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             }
 
+            // 「按 Backspace 往前跳」的功能
             function handleKeydown(e) {
                 const currentInput = e.target;
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
+                
                 if (e.key === "Backspace" && currentInput.value.length === 0 && index > 0) {
                     inputs[index - 1].focus();
                 }
             }
 
-Opening a file: ending.html
+            // 「檢查密碼」的功能
             function checkPassword() {
                 const enteredCode = Array.from(inputs)
                                        .map(input => input.value)
@@ -184,20 +192,12 @@ Opening a file: ending.html
 
                 if (enteredCode === correctPassword) {
                     
-                    // *** 關鍵修改：從這裡開始 ***
-                    
-                    // 1. 標記今天已成功 (防止重複計次的關鍵)
-                    // 我們只記錄日期 "YYYY-MM-DD"
                     const today = new Date().toISOString().split('T')[0];
                     localStorage.setItem('bombDefusedDate', today);
 
-                    // 2. 跳出恭喜的對話方塊
                     alert("任務成功！炸彈成功拆除！");
                     
-                    // 3. 導向到結局頁面
                     window.location.href = 'ending.html'; 
-
-                    // *** 關鍵修改：到這裡結束 ***
 
                 } else {
                     resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
@@ -205,6 +205,7 @@ Opening a file: ending.html
                 }
             }
 
+            // *** 綁定功能 ***
             inputs.forEach(input => {
                 input.addEventListener("input", handleInput);
                 input.addEventListener("keydown", handleKeydown);

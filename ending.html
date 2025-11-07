@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 任務完成</title>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #2a2a2a;
+            border: 2px solid #00ff41; /* 成功的綠色 */
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+            text-align: center;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            color: #00ff41;
+            margin: 0 0 1.5rem 0;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 10px #00ff41;
+            font-size: 2.5rem;
+        }
+        
+        /* 這是為計數器預留的位置 */
+        #counter-display {
+            font-size: 1.5rem;
+            color: #ffc107; /* 黃色 */
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #1e1e1e;
+            border: 1px dashed #555;
+            border-radius: 5px;
+        }
+        
+        /* 這是 "防止 reload" 邏輯的展示 */
+        #reload-message {
+            font-size: 1rem;
+            color: #aaa;
+            font-style: italic;
+            display: none; /* 預設隱藏 */
+        }
+
+        .content {
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            border-top: 1px dashed #555;
+            padding-top: 1.5rem;
+        }
+
+        .content h2 {
+            color: #4db8ff; /* 藍色 */
+            margin-top: 0;
+        }
+
+        .report-box {
+            background-color: #1e1e1e;
+            border: 1px solid #4db8ff;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+        
+        .report-box p {
+            margin: 0;
+        }
+        
+        .report-box code {
+            color: #00ff41;
+            background-color: #333;
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; }
+            h1 { font-size: 1.8rem; }
+            #counter-display { font-size: 1.2rem; }
+            .content { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>...任務完成...</h1>
+
+        <div id="counter-display">
+            恭喜！您已成功拆除炸彈！
+        </div>
+        <p id="reload-message">（偵測到頁面重載）</p>
+
+        <div class="content">
+            <h2>幹得好，探員。</h2>
+            <p>你們的精準合作與冷靜判斷，成功化解了這次危機。城市安全了，這都歸功於你們的努力。</p>
+            <p>總部對你們的表現致上最高敬意。</p>
+            
+            <div class="report-box">
+                <h2>下一步：任務回報</h2>
+                <p>請立即前往您的指定頻道（例如 Discord / Line）回報：</p>
+                <p><code>這裡是 [您的隊名] 小隊，炸彈已正式拆除。</code></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 這是「防止重複計次」的邏輯展示
+            // 我們檢查 localStorage 中是否 *已經有* "lastVisit" 這個項目
+            const lastVisit = localStorage.getItem('lastEndingVisit');
+            
+            if (lastVisit) {
+                // 如果有，代表這是一次 Reload (重載)
+                document.getElementById('reload-message').style.display = 'block';
+                // 在這裡，我們 *不會* 呼叫計數器增加的函式
+            } else {
+                // 如果沒有，這是第一次載入
+                // 在這裡，我們 *才會* 呼叫計數器增加的函式 (如果有的話)
+                // console.log("第一次載入，準備呼叫計數器...");
+            }
+            
+            // 無論如何，都設定 "lastVisit"，這樣下一次重載就會被偵測到
+            // (注意：這只是為了 *展示* 防 reload 邏KA, 它會阻止計次)
+            // (在 `bomb_defuse.html` 中設定的 `bombDefusedDate` 才是真正用來判斷 "今天" 是否成功的)
+            localStorage.setItem('lastEndingVisit', new Date().getTime());
+
+        });
+    </script>
+</body>
+</html>

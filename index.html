@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 總入口</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            line-height: 1.7;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #00ff41;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        .description {
+            font-size: 1.1rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+            text-align: left;
+        }
+        
+        /* 模式選擇容器 (RWD) */
+        .mode-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        /* 每個模式的卡片 */
+        .mode-card {
+            flex: 1;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            border: 2px solid #555;
+            display: flex;
+            flex-direction: column;
+        }
+        .mode-card h2 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+        }
+        
+        /* 標準版 */
+        #standard-mode {
+            border-color: #4db8ff;
+        }
+        #standard-mode h2 {
+            color: #4db8ff;
+        }
+
+        /* 進階版 */
+        #advanced-mode {
+            border-color: #ff4141;
+        }
+        #advanced-mode h2 {
+            color: #ff4141;
+        }
+        
+        /* 說明文件區 */
+        .guides {
+            text-align: left;
+            margin-bottom: 2rem;
+            flex-grow: 1; /* RWD 關鍵：讓卡片等高 */
+        }
+        .guides h3 {
+            color: #ffc107;
+            border-bottom: 1px dashed #555;
+            padding-bottom: 0.5rem;
+        }
+        .guides p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+        .guides a {
+            color: #00ff41;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .guides a:hover {
+            text-decoration: underline;
+        }
+        
+        /* QR Code 圖片區 */
+        .qrcode-image {
+            display: block; /* 讓圖片獨佔一行 */
+            width: 150px; /* QR Code 圖片大小 */
+            height: 150px;
+            margin: 1rem auto; /* 置中 */
+            background-color: #333; /* 圖片載入前的佔位符顏色 */
+            border: 1px solid #777;
+            border-radius: 5px;
+        }
+        
+        /* 啟動按鈕 */
+        .start-button {
+            display: block;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            background-color: #00ff41;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: auto; /* RWD 關鍵：讓按鈕永遠置底 */
+            transition: all 0.3s ease;
+        }
+        .start-button:hover {
+            background-color: #fff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+        
+        /* 手機 RWD */
+        @media (max-width: 768px) {
+            .mode-container {
+                flex-direction: column; /* 垂直堆疊 */
+            }
+            .mode-card {
+                padding: 1rem;
+            }
+            h1 { font-size: 1.8rem; }
+            .description { font-size: 1rem; }
+            .guides p { font-size: 1rem; }
+            .qrcode-image { width: 120px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 鷹眼行動 (Operation Hawkeye)</h1>
+        <p class="description">
+            歡迎來到「鷹眼行動」任務入口。這是一場高壓的通訊與解謎挑戰。你的團隊必須透過無線電、使用北約音標，在時限內彙整情報、解除威脅。
+            請選擇你的任務模式，並詳閱你的角色指引。
+        </p>
+
+        <div class="mode-container">
+            
+            <div class="mode-card" id="standard-mode">
+                <h2>標準模式</h2>
+                <div class="guides">
+                    <h3>【任務指引】</h3>
+                    <p>
+                        ▶ <a href="guide_standard_intel.html" target="_blank">情報小組 (Intel) 指引</a>
+                        <img src="qrcode_std_intel.png" alt="情報小組指引 QR Code" class="qrcode-image">
+                    </p>
+                    <p>
+                        ▶ <a href="guide_standard_bomb.html" target="_blank">拆彈小組 (Bomb) 指引</a>
+                        <img src="qrcode_std_bomb.png" alt="拆彈小組指引 QR Code" class="qrcode-image">
+                    </p>
+                </div>
+                <a href="lobby.html" class="start-button">啟動標準版任務</a>
+            </div>
+
+            <div class="mode-card" id="advanced-mode">
+                <h2>進階模式</h2>
+                <div class="guides">
+                    <h3>【任務指引】</h3>
+                    <p>
+                        ▶ <a href="guide_advanced_intel.html" target="_blank">情報小組 (Intel) 指引</a>
+                        <img src="qrcode_adv_intel.png" alt="進階情報小組指引 QR Code" class="qrcode-image">
+                    </p>
+                    <p>
+                        ▶ <a href="guide_advanced_bomb.html" target="_blank">拆彈小組 (Bomb) 指引</a>
+                        <img src="qrcode_adv_bomb.png" alt="進階拆彈小組指引 QR Code" class="qrcode-image">
+                    </p>
+                </div>
+                <a href="https://kamiyu94.github.io/bomb_defuse_adv/" class="start-button">啟動進階版任務</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

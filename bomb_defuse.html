@@ -6,13 +6,9 @@
     <title>鷹眼行動</title>
     
     <script>
-        // 立即從 URL 讀取密碼
+        // 「閱後即焚」腳本 (保持不變)
         const urlParams = new URLSearchParams(window.location.search);
-        // 將密碼存儲在全域 window 變數中，以便稍後使用
         window.correctPassword = (urlParams.get('pass') || "").toUpperCase();
-        
-        // 立即清除 URL (閱後即焚)
-        // 這會將 "....html?pass=ABC" 改回 "....html"
         history.replaceState(null, '', window.location.pathname);
     </script>
     
@@ -148,24 +144,19 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // *** 關鍵修改 2：現在直接從 window.correctPassword 讀取密碼 ***
-            // (我們在 <head> 中已經把密碼存到這裡了)
             const correctPassword = window.correctPassword; 
-            
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
-            // 檢查是否成功獲取密碼
             if (!correctPassword) {
                 resultMessage.innerHTML = "錯誤：未設定任務密碼。請從「任務產生器」頁面重新開始。";
                 resultMessage.className = "result-message result-error";
-                unlockButton.disabled = true; // 禁用按鈕
+                unlockButton.disabled = true;
                 inputs.forEach(input => input.disabled = true);
-                return; // 停止執行
+                return; 
             }
 
-            // (處理輸入和跳轉的函式... 保持不變)
             function handleInput(e) {
                 const currentInput = e.target;
                 const value = currentInput.value;
@@ -184,17 +175,30 @@
                 }
             }
 
-            // (檢查密碼的函式... 保持不變)
+Opening a file: ending.html
             function checkPassword() {
                 const enteredCode = Array.from(inputs)
                                        .map(input => input.value)
                                        .join('')
                                        .toUpperCase();
-                
-                // 這裡的 correctPassword 來自頂部的 const correctPassword
+
                 if (enteredCode === correctPassword) {
-                    resultMessage.textContent = "任務成功！炸彈成功拆除！";
-                    resultMessage.className = "result-message result-success";
+                    
+                    // *** 關鍵修改：從這裡開始 ***
+                    
+                    // 1. 標記今天已成功 (防止重複計次的關鍵)
+                    // 我們只記錄日期 "YYYY-MM-DD"
+                    const today = new Date().toISOString().split('T')[0];
+                    localStorage.setItem('bombDefusedDate', today);
+
+                    // 2. 跳出恭喜的對話方塊
+                    alert("任務成功！炸彈成功拆除！");
+                    
+                    // 3. 導向到結局頁面
+                    window.location.href = 'ending.html'; 
+
+                    // *** 關鍵修改：到這裡結束 ***
+
                 } else {
                     resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
                     resultMessage.className = "result-message result-error";

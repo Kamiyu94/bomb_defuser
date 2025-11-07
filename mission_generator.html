@@ -94,12 +94,14 @@
         <div class="links-container" id="links-container">
             <h2>新任務已產生！</h2>
             <p>請將以下連結（可點擊右鍵「複製連結網址」）分發給各小組：</p>
+            
             <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank"></a></p>
             <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank"></a></p>
             <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank"></a></p>
             <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank"></a></p>
             <hr style="border-color: #555;">
             <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank"></a></p>
+            
             <div class="password-display" id="password-display"></div>
         </div>
     </div>
@@ -122,28 +124,28 @@
             // 3. 取得目前路徑 (確保相對路徑正確)
             const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
 
-            // 4. 產生連結 (使用 encodeURIComponent 確保特殊字元安全)
-            const linkMain = `${baseURL}hawkeye_main.html?pass=${encodeURIComponent(fullPassword)}`;
-            const linkPart1 = `${baseURL}password_part1.html?code=${encodeURIComponent(part1)}`;
-            const linkPart2 = `${baseURL}password_part2.html?code=${encodeURIComponent(part2)}`;
-            const linkPart3 = `${baseURL}password_part3.html?code=${encodeURIComponent(part3)}`;
-            const linkInstructor = `${baseURL}instructor_view.html?pass=${encodeURIComponent(formattedPassword)}`;
+            // 4. *** 關鍵修改：產生連結 (已更新為您的檔名) ***
+            const linkMain = `${baseURL}bomb_defuse.html?pass=${encodeURIComponent(fullPassword)}`;
+            const linkPart1 = `${baseURL}code_alpha.html?code=${encodeURIComponent(part1)}`;
+            const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(part2)}`;
+            const linkPart3 = `${baseURL}code_charlie.html?code=${encodeURIComponent(part3)}`;
+            const linkInstructor = `${baseURL}answer.html?pass=${encodeURIComponent(formattedPassword)}`;
 
-            // 5. 將連結填入 HTML
+            // 5. *** 關鍵修改：將連結填入 HTML (已更新為您的檔名) ***
             document.getElementById("link-main").href = linkMain;
-            document.getElementById("link-main").textContent = "hawkeye_main.html";
+            document.getElementById("link-main").textContent = "bomb_defuse.html";
             
             document.getElementById("link-part1").href = linkPart1;
-            document.getElementById("link-part1").textContent = "password_part1.html";
+            document.getElementById("link-part1").textContent = "code_alpha.html";
 
             document.getElementById("link-part2").href = linkPart2;
-            document.getElementById("link-part2").textContent = "password_part2.html";
+            document.getElementById("link-part2").textContent = "code_bravo.html";
             
             document.getElementById("link-part3").href = linkPart3;
-            document.getElementById("link-part3").textContent = "password_part3.html";
+            document.getElementById("link-part3").textContent = "code_charlie.html";
 
             document.getElementById("link-instructor").href = linkInstructor;
-            document.getElementById("link-instructor").textContent = "instructor_view.html";
+            document.getElementById("link-instructor").textContent = "answer.html";
 
             // 6. 顯示密碼和連結
             document.getElementById("password-display").textContent = `本次密碼: ${formattedPassword}`;

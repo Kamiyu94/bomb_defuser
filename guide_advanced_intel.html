@@ -105,11 +105,21 @@
             color: #ff4141;
             margin: 0 0 1rem 0;
         }
-        
+        /* --- QR Code 圖片區 --- */
+        .qrcode-image {
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 1rem auto; /* 置中 */
+            background-color: #333;
+            border: 1px solid #777;
+            border-radius: 5px;
+        }
         @media (max-width: 600px) {
             .container { padding: 1.5rem; }
             h1 { font-size: 1.8rem; }
             p, .content li, .role-box p { font-size: 1rem; }
+            .qrcode-image { width: 120px; height: 120px; }
         }
     </style>
 </head>

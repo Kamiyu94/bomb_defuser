@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 北約音標簡表</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            line-height: 1.7;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 1.5rem 2.5rem;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #00ff41;
+            margin: 0 0 1.5rem 0;
+            text-shadow: 0 0 10px #00ff41;
+            text-align: center;
+        }
+        h2 {
+            color: #ffc107;
+            border-bottom: 1px dashed #555;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        
+        /* --- RWD 網格佈局 --- */
+        .grid-container {
+            display: grid;
+            /* RWD 關鍵：
+               自動填充欄位，每欄最小 150px，最大 1fr (自動均分)
+               在手機上會自動變 1-2 欄，在桌機上會變 3-4 欄
+            */
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .grid-item {
+            background-color: #1e1e1e;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #444;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .letter {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4db8ff;
+            flex-shrink: 0; /* 防止字母被壓縮 */
+            min-width: 30px; /* 確保對齊 */
+            text-align: right;
+        }
+        
+        .word {
+            font-size: 1.2rem;
+            color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        /* --- 專業提示區 --- */
+        .tips-box {
+            background-color: #1e1e1e;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .tips-box h3 {
+            color: #ffc107;
+            margin: 0 0 1rem 0;
+        }
+        .tips-box ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .tips-box code {
+            color: #00ff41;
+            background-color: #333;
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>北約音標 (NATO) 簡表</h1>
+        
+        <h2>字母 (Alphabet)</h2>
+        <div class="grid-container">
+            <div class="grid-item"><span class="letter">A</span><span class="word">Alfa</span></div>
+            <div class="grid-item"><span class="letter">B</span><span class="word">Bravo</span></div>
+            <div class="grid-item"><span class="letter">C</span><span class="word">Charlie</span></div>
+            <div class="grid-item"><span class="letter">D</span><span class="word">Delta</span></div>
+            <div class="grid-item"><span class="letter">E</span><span class="word">Echo</span></div>
+            <div class="grid-item"><span class="letter">F</span><span class="word">Foxtrot</span></div>
+            <div class="grid-item"><span class="letter">G</span><span class="word">Golf</span></div>
+            <div class="grid-item"><span class="letter">H</span><span class="word">Hotel</span></div>
+            <div class="grid-item"><span class="letter">I</span><span class="word">India</span></div>
+            <div class="grid-item"><span class="letter">J</span><span class="word">Juliett</span></div>
+            <div class="grid-item"><span class="letter">K</span><span class="word">Kilo</span></div>
+            <div class="grid-item"><span class="letter">L</span><span class="word">Lima</span></div>
+            <div class="grid-item"><span class="letter">M</span><span class="word">Mike</span></div>
+            <div class="grid-item"><span class="letter">N</span><span class="word">November</span></div>
+            <div class="grid-item"><span class="letter">O</span><span class="word">Oscar</span></div>
+            <div class="grid-item"><span class="letter">P</span><span class="word">Papa</span></div>
+            <div class="grid-item"><span class="letter">Q</span><span class="word">Quebec</span></div>
+            <div class="grid-item"><span class="letter">R</span><span class="word">Romeo</span></div>
+            <div class="grid-item"><span class="letter">S</span><span class="word">Sierra</span></div>
+            <div class="grid-item"><span class="letter">T</span><span class="word">Tango</span></div>
+            <div class="grid-item"><span class="letter">U</span><span class="word">Uniform</span></div>
+            <div class="grid-item"><span class="letter">V</span><span class="word">Victor</span></div>
+            <div class="grid-item"><span class="letter">W</span><span class="word">Whiskey</span></div>
+            <div class="grid-item"><span class="letter">X</span><span class="word">X-ray</span></div>
+            <div class="grid-item"><span class="letter">Y</span><span class="word">Yankee</span></div>
+            <div class="grid-item"><span class="letter">Z</span><span class="word">Zulu</span></div>
+        </div>
+
+        <h2>數字 (Numbers)</h2>
+        <div class="grid-container">
+            <div class="grid-item"><span class="letter">0</span><span class="word">Zero</span></div>
+            <div class="grid-item"><span class="letter">1</span><span class="word">One</span></div>
+            <div class="grid-item"><span class="letter">2</span><span class="word">Two</span></div>
+            <div class="grid-item"><span class="letter">3</span><span class="word">Three</span></div>
+            <div class="grid-item"><span class="letter">4</span><span class="word">Four</span></div>
+            <div class="grid-item"><span class="letter">5</span><span class="word">Five</span></div>
+            <div class="grid-item"><span class="letter">6</span><span class="word">Six</span></div>
+            <div class="grid-item"><span class="letter">7</span><span class="word">Seven</span></div>
+            <div class="grid-item"><span class="letter">8</span><span class="word">Eight</span></div>
+            <div class="grid-item"><span class="letter">9</span><span class="word">Niner</span></div>
+        </div>
+
+        <h2>專業提示 (Pro Tips)</h2>
+        <div class="tips-box">
+            <h3>關鍵發音</h3>
+            <ul>
+                <li><strong><code>9</code> 讀作 <code>Niner</code> (Nine-er)：</strong> 為了避免在嘈雜的無線電中與 "5" (Five) 混淆。</li>
+                <li><strong><code>3</code> 讀作 <code>Tree</code> (Tree)：</strong> 避免 "th" 的音被雜訊吃掉。</li>
+                <li><strong><code>A</code> 讀作 <code>Alfa</code>：</strong> 拼音是 F (Alfa)，不是 PH (Alpha)。</li>
+                <li><strong><code>J</code> 讀作 <code>Juliett</code>：</strong> 拼音結尾有兩個 T (Juliett)，以確保發音清晰。</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

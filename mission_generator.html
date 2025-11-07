@@ -96,35 +96,10 @@
             color: #ffc107; 
             font-style: italic;
         }
-        
-        .qr-code-wrapper {
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 10px;
-            border: 1px solid #555;
-            background-color: white;
-            padding: 2px;
-            border-radius: 3px;
-        }
-        .qr-code-wrapper canvas {
-            display: block;
-        }
-        @media (max-width: 600px) {
-            .links-container p {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .links-container a, .qr-code-wrapper {
-                display: block;
-                margin-top: 5px;
-                margin-left: 0;
-            }
-        }
+
     </style>
     
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-</head>
+    </head>
 <body>
     <div class="container">
         <h1>鷹眼行動 - 任務產生器</h1>
@@ -133,12 +108,12 @@
             <h2>新任務已產生！</h2>
             <p>請將以下連結（可點擊右鍵「複製連結網址」）分發給各小組：</p>
             
-            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank">bomb_defuse.html</a><span id="qr-main"></span></p>
-            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank">code_alpha.html</a><span id="qr-part1"></span></p>
-            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank">code_bravo.html</a><span id="qr-part2"></span></p>
-            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank">code_charlie.html</a><span id="qr-part3"></span></p>
+            <p><strong>拆彈主頁:</strong> <a href="#" id="link-main" target="_blank">bomb_defuse.html</a></p>
+            <p><strong>Alpha 組:</strong> <a href="#" id="link-part1" target="_blank">code_alpha.html</a></p>
+            <p><strong>Bravo 組:</strong> <a href="#" id="link-part2" target="_blank">code_bravo.html</a></p>
+            <p><strong>Charlie 組:</strong> <a href="#" id="link-part3" target="_blank">code_charlie.html</a></p>
             <hr style="border-color: #555;">
-            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank">answer.html</a><span id="qr-instructor"></span></p>
+            <p><strong>教官視角:</strong> <a href="#" id="link-instructor" target="_blank">answer.html</a></p>
             
             <div class="password-display hidden-state" id="password-display" data-visible="false">
                 [ 點此顯示/隱藏密碼 ]
@@ -173,7 +148,7 @@
             // 4. 產生連結
             const linkMain = `${baseURL}bomb_defuse.html?pass=${encodeURIComponent(fullPassword)}`;
             const linkPart1 = `${baseURL}code_alpha.html?code=${encodeURIComponent(part1)}`;
-            const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(partExample 2)}`;
+            const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(part2)}`;
             const linkPart3 = `${baseURL}code_charlie.html?code=${encodeURIComponent(part3)}`;
             const linkInstructor = `${baseURL}answer.html?pass=${encodeURIComponent(formattedPassword)}`;
 
@@ -194,18 +169,7 @@
 
             console.log("新任務密碼:", formattedPassword);
 
-            // 7. 生成 QR Code (每次生成前先清空)
-            document.getElementById("qr-main").innerHTML = '';
-            document.getElementById("qr-part1").innerHTML = '';
-            document.getElementById("qr-part2").innerHTML = '';
-            document.getElementById("qr-part3").innerHTML = '';
-            document.getElementById("qr-instructor").innerHTML = '';
-
-            generateQrCode("qr-main", linkMain);
-            generateQrCode("qr-part1", linkPart1);
-            generateQrCode("qr-part2", linkPart2);
-            generateQrCode("qr-part3", linkPart3);
-            generateQrCode("qr-instructor", linkInstructor);
+            // (QR Code 的 JAVASCRIPT 邏輯已移除)
         });
 
         // 為密碼顯示區新增點擊事件
@@ -227,22 +191,7 @@
             }
         });
 
-        // 生成 QR Code 的輔助函式
-        function generateQrCode(elementId, url) {
-            const wrapper = document.createElement('span');
-            wrapper.className = 'qr-code-wrapper';
-            document.getElementById(elementId).appendChild(wrapper);
-            
-            // 這行 new QRCode 現在可以正常運作了
-            new QRCode(wrapper, {
-                text: url,
-                width: 60,
-                height: 60,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        }
+        // (generateQrCode 函式已移除)
     </script>
 </body>
 </html>

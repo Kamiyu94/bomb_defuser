@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 標準模式 (情報小組)</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #2a2a2a;
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+            text-align: left;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #00ff41;
+            margin: 0 0 1.5rem 0;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 10px #00ff41;
+            text-align: center;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        strong {
+            color: #4db8ff;
+            font-weight: normal;
+        }
+        
+        /* 角色說明 */
+        .role-box {
+            background-color: #1e1e1e;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .role-box h2 {
+            color: #ffc107;
+            margin: 0 0 0.5rem 0;
+        }
+        .role-box p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        /* 內容 */
+        .content {
+            border-top: 1px dashed #555;
+            padding-top: 1.5rem;
+        }
+        .content h2 {
+            color: #4db8ff;
+            margin-top: 0;
+        }
+        .content h3 {
+            color: #e0e0e0;
+            border-bottom: 1px solid #555;
+            padding-bottom: 0.5rem;
+        }
+        .content ul {
+            padding-left: 1.5rem;
+        }
+        .content li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 範例 */
+        blockquote {
+            background-color: #333;
+            border-left: 5px solid #00ff41;
+            padding: 0.5rem 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #f0f0f0;
+        }
+        
+        /* 規則 */
+        .rules-box {
+            background-color: #2a0000;
+            border: 1px solid #ff4141;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .rules-box h2 {
+            color: #ff4141;
+            margin: 0 0 1rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; }
+            h1 { font-size: 1.8rem; }
+            p, .content li, .role-box p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>鷹眼行動 (標準模式)</h1>
+        
+        <p>歡迎加入「鷹眼行動」。一枚定時炸彈已被啟動，密碼被拆分成三組，由三名潛伏的情報官持有。你們的任務是：在時限內找到情報、彙整密碼、解除威脅。</p>
+
+        <div class="role-box">
+            <h2>你的角色：情報小組 (Alpha / Bravo / Charlie)</h2>
+            <p>你是前線的「獵鷹」。你的任務是找到你的情報官、獲取密碼片段，並清晰地回報給拆彈小組。</p>
+        </div>
+
+        <div class="content">
+            <h2>行動流程</h2>
+            
+            <h3>【僅限】情報小組 (Alpha, Bravo, Charlie)</h3>
+            <ul>
+                <li><strong>接收頻道：</strong> 從總部 (HQ) 獲取你小隊的專屬無線電頻道 (CH1, CH2 或 CH3) 和「行動地圖」。</li>
+                <li><strong>呼叫情資：</strong> 立即使用你的頻道呼叫你的「情報官」(教官)。
+                    <blockquote>範例：「Alpha Contact，這裡是 Alpha Team，How copy?」</blockquote>
+                </li>
+                <li><strong>解開謎題：</strong> 你的情報官會透過無線電給你一個「線索」。使用你的「行動地圖」解讀線索並找到他們的實際位置。<br>(Alpha = 座標, Bravo = 地圖編碼, Charlie = 地標)</li>
+                <li><strong>獲取密碼：</strong> 找到情報官後，掃描他們提供的 QR Code。你將獲得：
+                    <ul>
+                        <li>4 位數密碼 (例如：T4G8)</li>
+                        <li>拆彈小組的頻道 (例如：430.900 MHz)</li>
+                    </ul>
+                </li>
+                <li><strong>關鍵回報：</strong> 立即將你的電台切換到「拆彈小組頻道」。使用北約音標 (NATO Phonetic Alphabet) 回報你的密碼。
+                    <blockquote>範例：「Bomb Squad，這裡是 Alpha Team。密碼片段：Tango - Four - Golf - Eight。完畢。」</blockquote>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="rules-box">
+            <h2>絕對規則 (Rules of Engagement)</h2>
+            <ul>
+                <li><strong>僅限無線電：</strong> 行動中，嚴禁使用手機、LINE 或任何非無線電方式進行通訊。</li>
+                <li><strong>SOP 優先：</strong> 所有英文字母必須使用「北約音標」通話。</li>
+                <li><strong>先聽後發：</strong> 按下 PTT (發射鍵) 前，永遠先聽 1 秒，確保頻道空閒。</li>
+            </ul>
+            <p>時間有限。祝你好運，73！</p>
+        </div>
+    </div>
+</body>
+</html>

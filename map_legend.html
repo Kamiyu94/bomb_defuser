@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 行動地圖</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            line-height: 1.7;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 1.5rem 2.5rem;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #00ff41;
+            margin: 0 0 1.5rem 0;
+            text-shadow: 0 0 10px #00ff41;
+            text-align: center;
+        }
+        h2 {
+            color: #ffc107;
+            border-bottom: 1px dashed #555;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        
+        /* 範例地圖 SVG */
+        #demo-map {
+            width: 100%;
+            height: auto;
+            background-color: #ccc;
+            border: 2px solid #555;
+            border-radius: 5px;
+        }
+        
+        /* 提示區 */
+        .info-box {
+            background-color: #1e1e1e;
+            border: 1px solid #4db8ff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .info-box h3 {
+            color: #4db8ff;
+            margin: 0 0 1rem 0;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .info-box code {
+            color: #00ff41;
+            background-color: #333;
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+        }
+        
+        .return-link {
+            display: inline-block;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: #00ff41;
+            text-decoration: none;
+        }
+        .return-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>行動地圖 / 圖例 (Map / Legend)</h1>
+        
+        <h2>範例地圖 (Placeholder)</h2>
+        <p>這是一張範例地圖。請將此替換為您的實際行動地圖。</p>
+        
+        <svg id="demo-map" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="150" fill="#b0c4b0"/>
+            <path d="M 50 0 V 150 M 100 0 V 150 M 150 0 V 150 M 0 50 H 200 M 0 100 H 200" stroke="#555" stroke-width="0.5" stroke-dasharray="2 2"/>
+            <text x="25" y="8" font-size="6" fill="#000" text-anchor="middle">A</text>
+            <text x="75" y="8" font-size="6" fill="#000" text-anchor="middle">B</text>
+            <text x="125" y="8" font-size="6" fill="#000" text-anchor="middle">C</text>
+            <text x="175" y="8" font-size="6" fill="#000" text-anchor="middle">D</text>
+            <text x="4" y="25" font-size="6" fill="#000" alignment-baseline="middle">1</text>
+            <text x="4" y="75" font-size="6" fill="#000" alignment-baseline="middle">2</text>
+            <text x="4" y="125" font-size="6" fill="#000" alignment-baseline="middle">3</text>
+            <path d="M 100 0 V 150 M 0 75 H 200" stroke="#f00" stroke-width="1"/>
+            <text x="50" y="37.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-1</text>
+            <text x="150" y="37.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-2</text>
+            <text x="50" y="112.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-3</text>
+            <text x="150" y="112.5" font-size="10" fill="#f00" text-anchor="middle" opacity="0.5">S-4</text>
+            <path d="M 125 125 l 5 -10 l 5 10 z" fill="#00f"/> <text x="130" y="140" font-size="6" fill="#00f">舊塔 (Tower)</text>
+            <circle cx="30" cy="40" r="6" fill="#f00" stroke="#fff" stroke-width="1"/> <text x="30" y="52" font-size="6" fill="#f00" text-anchor="middle">目標 (Target)</text>
+        </svg>
+
+        <h2>情報解讀 (Intel Key)</h2>
+        <p>這份文件說明了如何解讀你從情報官那裡收到的「線索」。</p>
+        
+        <div class="info-box">
+            <h3>Alpha 小組 (座標)</h3>
+            <ul>
+                <li>你的線索是一個「網格座標」(Grid Coordinate)。</li>
+                <li>範例：線索 <code>C-3</code> 指的是地圖上 C 欄與第 3 列的交會區域。</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h3>Bravo 小組 (編碼)</h3>
+            <ul>
+                <li>你的線索是一個「區域編碼」(Sector Code)。</li>
+                <li>範例：線索 <code>S-2</code> 指的是地圖上標示為「S-2」的紅色大區域。</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h3>Charlie 小組 (地標)</h3>
+            <ul>
+                <li>你的線索是一個「地標」(Landmark)。</li>
+                <li>範例：線索 <code>"The Old Tower"</code> 指的是地圖上標示為「舊塔」的 🔺 符號位置。</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="return-link">[[ 返回總入口 ]]</a>
+    </div>
+</body>
+</html>

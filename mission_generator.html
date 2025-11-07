@@ -80,22 +80,20 @@
             text-decoration: underline;
         }
         
-        /* --- *** 關鍵修改 1：密碼顯示區樣式 *** --- */
         .password-display {
             font-size: 1.5rem;
             font-family: 'Courier New', Courier, monospace;
-            color: #28a745; /* 預設為綠色 (顯示時) */
+            color: #28a745; 
             margin-top: 1rem;
             padding: 1rem;
             background: #1e1e1e;
             border-radius: 5px;
-            cursor: pointer; /* 提示可以點擊 */
-            user-select: none; /* 防止點擊時選取文字 */
+            cursor: pointer; 
+            user-select: none; 
             transition: color 0.2s;
         }
-        /* 隱藏時的樣式 */
         .password-display.hidden-state {
-            color: #ffc107; /* 提示的黃色 */
+            color: #ffc107; 
             font-style: italic;
         }
         
@@ -124,7 +122,8 @@
         }
     </style>
     
-<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -148,10 +147,8 @@
     </div>
 
     <script>
-        // *** 關鍵修改 3：將密碼存在變數中 ***
         let currentPassword = ""; // 儲存當前生成的密碼
         
-        // 頁面載入時就先抓好元素
         const passwordDisplay = document.getElementById("password-display");
         
         document.getElementById("generate-button").addEventListener("click", () => {
@@ -168,7 +165,6 @@
             const part3 = fullPassword.substring(8, 12);
             const formattedPassword = `${part1}-${part2}-${part3}`;
             
-            // *** 關鍵修改：將密碼存到全域變數 ***
             currentPassword = formattedPassword;
 
             // 3. 取得目前路徑
@@ -177,7 +173,7 @@
             // 4. 產生連結
             const linkMain = `${baseURL}bomb_defuse.html?pass=${encodeURIComponent(fullPassword)}`;
             const linkPart1 = `${baseURL}code_alpha.html?code=${encodeURIComponent(part1)}`;
-            const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(part2)}`;
+            const linkPart2 = `${baseURL}code_bravo.html?code=${encodeURIComponent(partExample 2)}`;
             const linkPart3 = `${baseURL}code_charlie.html?code=${encodeURIComponent(part3)}`;
             const linkInstructor = `${baseURL}answer.html?pass=${encodeURIComponent(formattedPassword)}`;
 
@@ -188,7 +184,7 @@
             document.getElementById("link-part3").href = linkPart3;
             document.getElementById("link-instructor").href = linkInstructor;
 
-            // 6. *** 關鍵修改：重設密碼顯示區為隱藏狀態 ***
+            // 6. 重設密碼顯示區為隱藏狀態
             passwordDisplay.textContent = "[ 點此顯示/隱藏密碼 ]";
             passwordDisplay.classList.add("hidden-state");
             passwordDisplay.dataset.visible = "false";
@@ -198,7 +194,7 @@
 
             console.log("新任務密碼:", formattedPassword);
 
-            // 7. 生成 QR Code
+            // 7. 生成 QR Code (每次生成前先清空)
             document.getElementById("qr-main").innerHTML = '';
             document.getElementById("qr-part1").innerHTML = '';
             document.getElementById("qr-part2").innerHTML = '';
@@ -212,20 +208,19 @@
             generateQrCode("qr-instructor", linkInstructor);
         });
 
-        // *** 關鍵修改 3：為密碼顯示區新增點擊事件 ***
+        // 為密碼顯示區新增點擊事件
         passwordDisplay.addEventListener("click", () => {
-            // 如果還沒產生密碼，就什麼都不做
             if (currentPassword === "") return;
 
             const isVisible = passwordDisplay.dataset.visible === "true";
 
             if (isVisible) {
-                // 目前是顯示的 -> 把它隱藏
+                // 隱藏
                 passwordDisplay.textContent = "[ 點此顯示/隱藏密碼 ]";
                 passwordDisplay.classList.add("hidden-state");
                 passwordDisplay.dataset.visible = "false";
             } else {
-                // 目前是隱藏的 -> 把它顯示
+                // 顯示
                 passwordDisplay.textContent = `本次密碼: ${currentPassword}`;
                 passwordDisplay.classList.remove("hidden-state");
                 passwordDisplay.dataset.visible = "true";
@@ -237,7 +232,8 @@
             const wrapper = document.createElement('span');
             wrapper.className = 'qr-code-wrapper';
             document.getElementById(elementId).appendChild(wrapper);
-
+            
+            // 這行 new QRCode 現在可以正常運作了
             new QRCode(wrapper, {
                 text: url,
                 width: 60,

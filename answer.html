@@ -51,6 +51,7 @@
             letter-spacing: 0.1em;
             margin-bottom: 2rem;
             word-wrap: break-word; /* 避免在小螢幕溢出 */
+            min-height: 1.5em;
         }
         .code-parts {
             text-align: left;
@@ -79,15 +80,36 @@
         <h1>教官視角</h1>
         <h2>本次任務完整解鎖密碼</h2>
         
-        <div class="full-code" id="full-code">
-            T4G8-F2J9-V6N1
-        </div>
+        <div class="full-code" id="full-code-display"></div>
         
         <div class="code-parts">
-            <p><strong>Alpha 組:</strong> T4G8</p>
-            <p><strong>Bravo 組:</strong> F2J9</p>
-            <p><strong>Charlie 組:</strong> V6N1</p>
+            <p><strong>Alpha 組:</strong> <span id="part1-display"></span></p>
+            <p><strong>Bravo 組:</strong> <span id="part2-display"></span></p>
+            <p><strong>Charlie 組:</strong> <span id="part3-display"></span></p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // *** 關鍵修改：從 URL 讀取密碼 ***
+            const urlParams = new URLSearchParams(window.location.search);
+            // 讀取帶有 '-' 的密碼
+            const formattedPassword = urlParams.get('pass') || "錯誤"; 
+            
+            document.getElementById("full-code-display").textContent = formattedPassword.toUpperCase();
+
+            // 拆分密碼並分別顯示
+            const parts = formattedPassword.split('-');
+            if (parts.length === 3) {
+                document.getElementById("part1-display").textContent = parts[0].toUpperCase();
+                document.getElementById("part2-display").textContent = parts[1].toUpperCase();
+                document.getElementById("part3-display").textContent = parts[2].toUpperCase();
+            } else {
+                document.getElementById("part1-display").textContent = "錯誤";
+                document.getElementById("part2-display").textContent = "錯誤";
+                document.getElementById("part3-display").textContent = "錯誤";
+            }
+        });
+    </script>
 </body>
 </html>

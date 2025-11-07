@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鷹眼行動 - 任務檔案</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #2a2a2a;
+            border: 2px solid #ff4141; /* 紅色，代表機密 */
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(255, 65, 65, 0.2);
+            text-align: left;
+            box-sizing: border-box;
+        }
+        .classified-stamp {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff4141;
+            border: 3px solid #ff4141;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+            transform: rotate(-5deg);
+        }
+        h1 {
+            color: #e0e0e0;
+            margin: 0 0 1.5rem 0;
+            border-bottom: 1px dashed #555;
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: #ffc107;
+            margin-top: 2rem;
+        }
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        strong {
+            color: #4db8ff;
+            font-weight: normal;
+        }
+        .return-link {
+            display: inline-block;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: #00ff41;
+            text-decoration: none;
+            border: 1px solid #00ff41;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+        .return-link:hover {
+            background-color: #00ff41;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="classified-stamp">最高機密</span>
+        <h1>任務檔案 // 鷹眼行動</h1>
+        
+        <h2>行動代號：</h2>
+        <p>鷹眼行動 (Operation Hawkeye)</p>
+        
+        <h2>威脅目標：</h2>
+        <p>「黑蛇」(Black Snake) 恐怖組織。一個以製造混亂為樂的無政府主義團體，擅長使用加密通訊和非對稱戰術。</p>
+        
+        <h2>威脅評估：【嚴重】</h2>
+        <ul>
+            <li><strong>裝置：</strong> BS-M-8 型定時炸彈 (被稱為「黑蛇的蛋」)。</li>
+            <li><strong>引爆：</strong> 裝置已啟動，並與一個遠端加密序列綁定。</li>
+            <li><strong>拆解：</strong> 唯一的拆解方式是輸入一組 12 位數的英數終止密碼。任何錯誤的嘗試都可能加速計時。</li>
+        </ul>
+        
+        <h2>任務簡報：</h2>
+        <p>總部已確認炸彈位置，但密碼被拆分給三名潛伏在該區域的情報官。你的團隊必須分為「情報小組」和「拆彈小組」。</p>
+        <p>所有通訊必須透過加密的無線電頻道（使用北約音標）進行，以防「黑蛇」組織監聽。滲透、尋找情報、彙整資訊、解除威脅。</p>
+        <p>失敗不是一個選項。祝你好運。</p>
+
+        <a href="index.html" class="return-link">[[ 返回總入口 ]]</a>
+    </div>
+</body>
+</html>

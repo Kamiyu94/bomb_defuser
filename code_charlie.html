@@ -37,6 +37,7 @@
             letter-spacing: 0.2em;
             user-select: none;
             text-shadow: 0 0 15px #00ff41;
+            min-height: 1em;
         }
         @media (max-width: 600px) {
             h1 { font-size: 1.5rem; }
@@ -48,7 +49,17 @@
 <body>
     <div class="code-display">
         <h1>第三組解鎖碼</h1>
-        <div class="code">V6N1</div>
+        <div class="code" id="code-display"></div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // *** 關鍵修改：從 URL 讀取密碼片段 ***
+            const urlParams = new URLSearchParams(window.location.search);
+            const codePart = urlParams.get('code') || "錯誤";
+            
+            document.getElementById("code-display").textContent = codePart.toUpperCase();
+        });
+    </script>
 </body>
 </html>

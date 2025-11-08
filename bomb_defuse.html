@@ -6,10 +6,9 @@
     <title>鷹眼行動</title>
     
     <script>
-        // 「閱後即焚」腳本 (已移除 puzzleString)
+        // 「閱後即焚」腳本
         const urlParams = new URLSearchParams(window.location.search);
         window.correctPassword = (urlParams.get('pass') || "").toUpperCase();
-        // (已移除 puzzleString 邏輯)
         history.replaceState(null, '', window.location.pathname);
     </script>
     
@@ -157,19 +156,15 @@
         <div class="result-message" id="result-message"></div>
     </main>
 
-    <script>
+  <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 從 <head> 的腳本讀取密碼
-            const correctPassword = window.correctPassword; 
+            // --- 這是您 ADV 腳本的修改版 ---
             
-            // 抓取所有需要的 HTML 元素
+            const correctPassword = window.correctPassword;        
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
-
-            // (已移除 puzzleString 相關邏輯)
             
-            // 檢查密碼是否存在
             if (!correctPassword) {
                 resultMessage.innerHTML = "錯誤：未設定任務密碼。";
                 unlockButton.disabled = true;
@@ -177,61 +172,44 @@
                 return; 
             }
 
-            // 「自動跳轉」功能 (使用 keyup 修復了輸入兩次的 bug)
-            function handleKeyup(e) {
+            // --- 以下完全複製自您可正常運作的 ADV 腳本 ---
+
+            function handleInput(e) { // <-- 這是您要的 handleInput 函式
                 const currentInput = e.target;
-                
-                // 排除功能鍵 (例如 Tab, Shift, Arrow keys)
-                if (e.key.length > 1 && e.key !== "Backspace") {
-                    return;
-                }
-                
                 const value = currentInput.value;
                 currentInput.value = value.toUpperCase();
-                
-                // 自動跳到下一個 (只在有輸入字元時)
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
                 if (value.length === 1 && index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             }
 
-            // 「按 Backspace 往前跳」的功能
             function handleKeydown(e) {
                 const currentInput = e.target;
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
-                
                 if (e.key === "Backspace" && currentInput.value.length === 0 && index > 0) {
                     inputs[index - 1].focus();
                 }
             }
 
-            // 「檢查密碼」的功能 (已移除錯誤次數限制)
             function checkPassword() {
                 const enteredCode = Array.from(inputs).map(input => input.value).join('').toUpperCase();
-                
                 if (enteredCode === correctPassword) {
-                    // ---  successo ---
                     const today = new Date().toISOString().split('T')[0];
                     localStorage.setItem('bombDefusedDate', today);
-                    
                     alert("任務成功！炸彈成功拆除！");
                     window.location.href = 'ending.html'; 
-
                 } else {
-                    // --- 失敗 ---
                     resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
                     resultMessage.className = "result-message result-error";
                 }
             }
             
-            // *** 綁定功能 (最關鍵的部分) ***
             inputs.forEach(input => {
-                input.addEventListener("keyup", handleKeyup); // 綁定自動跳轉
-                input.addEventListener("keydown", handleKeydown); // 綁定往前刪除
+                input.addEventListener("input", handleInput); // <-- 使用您要的 "input" 事件
+                input.addEventListener("keydown", handleKeydown);
             });
-
-            unlockButton.addEventListener("click", checkPassword); // 綁定解鎖按鈕
+            unlockButton.addEventListener("click", checkPassword);
         });
     </script>
 </body>

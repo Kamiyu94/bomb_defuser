@@ -157,15 +157,19 @@
         <div class="result-message" id="result-message"></div>
     </main>
 
-<script>
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 從 <head> 的腳本讀取密碼
             const correctPassword = window.correctPassword; 
+            
+            // 抓取所有需要的 HTML 元素
             const inputs = document.querySelectorAll(".code-input");
             const unlockButton = document.getElementById("unlock-button");
             const resultMessage = document.getElementById("result-message");
 
             // (已移除 puzzleString 相關邏輯)
             
+            // 檢查密碼是否存在
             if (!correctPassword) {
                 resultMessage.innerHTML = "錯誤：未設定任務密碼。";
                 unlockButton.disabled = true;
@@ -173,8 +177,7 @@
                 return; 
             }
 
-            // *** 關鍵修改 1：函式從 handleInput 改名為 handleKeyup ***
-            // 這將在「按鍵放開時」才觸發
+            // 「自動跳轉」功能 (使用 keyup 修復了輸入兩次的 bug)
             function handleKeyup(e) {
                 const currentInput = e.target;
                 
@@ -193,7 +196,7 @@
                 }
             }
 
-            // 「按 Backspace 往前跳」的功能 (保持不變)
+            // 「按 Backspace 往前跳」的功能
             function handleKeydown(e) {
                 const currentInput = e.target;
                 const index = Array.prototype.indexOf.call(inputs, currentInput);
@@ -203,27 +206,32 @@
                 }
             }
 
-            // 「檢查密碼」的功能 (保持不變)
+            // 「檢查密碼」的功能 (已移除錯誤次數限制)
             function checkPassword() {
                 const enteredCode = Array.from(inputs).map(input => input.value).join('').toUpperCase();
+                
                 if (enteredCode === correctPassword) {
+                    // ---  successo ---
                     const today = new Date().toISOString().split('T')[0];
                     localStorage.setItem('bombDefusedDate', today);
+                    
                     alert("任務成功！炸彈成功拆除！");
                     window.location.href = 'ending.html'; 
+
                 } else {
+                    // --- 失敗 ---
                     resultMessage.textContent = "密碼錯誤！請重新確認資訊。";
                     resultMessage.className = "result-message result-error";
                 }
             }
             
-            // *** 關鍵修改 2：事件從 "input" 改為 "keyup" ***
+            // *** 綁定功能 (最關鍵的部分) ***
             inputs.forEach(input => {
-                input.addEventListener("keyup", handleKeyup); // <--- 在此修改
-                input.addEventListener("keydown", handleKeydown); // <--- 保持不變
+                input.addEventListener("keyup", handleKeyup); // 綁定自動跳轉
+                input.addEventListener("keydown", handleKeydown); // 綁定往前刪除
             });
 
-            unlockButton.addEventListener("click", checkPassword);
+            unlockButton.addEventListener("click", checkPassword); // 綁定解鎖按鈕
         });
     </script>
 </body>
